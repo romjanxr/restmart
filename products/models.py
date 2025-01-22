@@ -24,7 +24,7 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-created_at',]
+        ordering = ['-id',]
 
     def __str__(self):
         return self.name

@@ -5,7 +5,9 @@ from products.models import Product, Category
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name', 'description']
+        fields = ['id', 'name', 'description', 'products_count']
+
+    products_count = serializers.IntegerField()
 
 # class ProductSerializer(serializers.Serializer):
 #     id = serializers.IntegerField()
@@ -28,7 +30,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'name', 'price', 'category', 'price_with_tax']
+        fields = ['id', 'name', 'description', 'price', 'stock', 'category', 'price_with_tax']
         # fields = '__all__' # Bad Practice
     """Process for adding unit_price and category hyperlink is similar to normal serializer"""
     
@@ -42,6 +44,4 @@ class ProductSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Price could not be negative')
         return value
 
-    def validate(self, data):
-        if data['password'] != data['confirm_password']:
-            raise serializers.ValidationError("Password didn't mathc")
+   
