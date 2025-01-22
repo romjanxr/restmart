@@ -3,16 +3,23 @@ from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from products.serializers import ProductSerializer
-from products.models import Product
+from products.serializers import ProductSerializer, CategorySerializer
+from products.models import Product, Category
 
 
 # Create your views here.
-@api_view(['GET', 'POST', 'DELETE'])
+@api_view(['GET', 'POST'])
 def view_products(request):
-    queryset = Product.objects.all()
-    serializer = ProductSerializer(queryset, many=True, context={'request': request})
-    return Response(serializer.data)
+    if request.method == 'GET':
+        queryset = Product.objects.all()
+        serializer = ProductSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+    if request.method == 'POST':
+        serializer = ProductSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        print(serializer.validated_data)
+        return Response('okay')
+            
 
 @api_view()
 def view_specific_product(request, id):
@@ -21,5 +28,13 @@ def view_specific_product(request, id):
     return Response(serializer.data)
 
 @api_view()
-def collection_detail(request, pk):
-    return Response('ok')
+def view_categories(request):
+    categories = Category.objects.all()
+    serializer = CategorySerializer(categories, many=True)
+    return Response(serializer.data)
+
+@api_view()
+def view_specific_category(request, id):
+    category = get_object_or_404(Category,pk=id)
+    serializer = CategorySerializer(category)
+    return Response(serializer.data)
