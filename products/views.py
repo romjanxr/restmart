@@ -7,6 +7,9 @@ from products.serializers import ProductSerializer, CategorySerializer
 from products.models import Product, Category
 from drf_yasg.utils import swagger_auto_schema
 from django.db.models import Count
+from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+
 
 @swagger_auto_schema(
     method='post',
@@ -29,6 +32,41 @@ def view_products(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
             
+class ViewProducts(APIView):
+    def get(self, request):
+        queryset = Product.objects.all()
+        serializer = ProductSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+    def post(self, request):
+        serializer = ProductSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class ProductList(ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    # def get_queryset(self):
+    #     return Product.objects.all()
+    # def get_serializer_class(self):
+    #     return ProductSerializer
+
+    def get_serializer_context(self):
+        return {'request': self.request}
+
+class ProductDetails(RetrieveUpdateDestroyAPIView):
+    queryset = product = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'id'
+
+    def delete(self, request, id):
+        product = get_object_or_404(Product, pk=id)
+        if product.stock > 10:
+            return Response({'details': "Product has stock more than 10 could not be deleted"})
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
 @swagger_auto_schema(
     method='put',
