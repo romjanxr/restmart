@@ -1,5 +1,5 @@
 from products.serializers import ProductSerializer, CategorySerializer, CategorySerializer, ReviewSerializer
-from products.models import Product, Category, Reviews
+from products.models import Product, Category, Review
 from drf_yasg.utils import swagger_auto_schema
 from django.db.models import Count
 from rest_framework.viewsets import ModelViewSet
@@ -7,6 +7,15 @@ from rest_framework.viewsets import ModelViewSet
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        category_id = self.request.query_params.get('category_id')
+
+        if category_id is not None:
+            queryset = Product.objects.filter(category_id=category_id)
+        return queryset   
+
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -23,7 +32,7 @@ class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
 
     def get_queryset(self):
-        return Reviews.objects.filter(product_id=self.kwargs['product_pk'])
+        return Review.objects.filter(product_id=self.kwargs['product_pk'])
 
     def get_serializer_context(self):
         return {'product_id': self.kwargs['product_pk']}

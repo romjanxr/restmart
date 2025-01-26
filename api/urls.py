@@ -1,6 +1,7 @@
 from django.urls import include,path
 from products import views
 from rest_framework_nested import routers
+# from pprint import pprint
 
 router = routers.DefaultRouter()
 router.register('products', views.ProductViewSet)
@@ -16,3 +17,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('', include(product_routers.urls))
 ] 
+
+# pprint(router.urls + product_routers.urls)
