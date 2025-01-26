@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.urls import path, include
-from products.views import view_products
 from debug_toolbar.toolbar import debug_toolbar_urls
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi

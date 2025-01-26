@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from decimal import Decimal
-from products.models import Product, Category
+from products.models import Product, Category, Reviews
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,30 +9,10 @@ class CategorySerializer(serializers.ModelSerializer):
 
     products_count = serializers.IntegerField()
 
-# class ProductSerializer(serializers.Serializer):
-#     id = serializers.IntegerField()
-#     name = serializers.CharField()
-#     unit_price = serializers.DecimalField(max_digits=10, decimal_places=2, source='price')
-#     price_with_tax = serializers.SerializerMethodField(method_name='calculate_tax')
-#     # category = serializers.PrimaryKeyRelatedField(
-#     #     queryset = Category.objects.all()
-#     # )
-#     # category = serializers.StringRelatedField()
-#     # category = CategorySerializer()
-#     category = serializers.HyperlinkedRelatedField(
-#         queryset = Category.objects.all(),
-#         view_name='collection-detail'
-#     )
-    
-#     def calculate_tax(self, product: Product):
-#         return round(product.price * Decimal(1.1), 2)
-
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'name', 'description', 'price', 'stock', 'category', 'price_with_tax']
-        # fields = '__all__' # Bad Practice
-    """Process for adding unit_price and category hyperlink is similar to normal serializer"""
     
     price_with_tax = serializers.SerializerMethodField(method_name='calculate_tax')
 
@@ -43,5 +23,14 @@ class ProductSerializer(serializers.ModelSerializer):
         if value < 0:
             raise serializers.ValidationError('Price could not be negative')
         return value
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reviews
+        fields = ['id', 'date', 'name', 'description']
+
+    def create(self, validated_data):
+        product_id = self.context['product_id']
+        return Reviews.objects.create(product_id=product_id, **validated_data)
 
    
