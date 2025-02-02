@@ -1,7 +1,7 @@
 from django.db import models
-
-# Create your models here.
-
+from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils.timezone import now
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -31,7 +31,12 @@ class Product(models.Model):
 
 
 class Review(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    description = models.TextField()
-    date = models.DateField(auto_now_add=True)
+    rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True) # 2024-01-01 00:00:00
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Review by {self.user.first_name} on {self.product.name}"
