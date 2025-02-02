@@ -17,5 +17,7 @@ carts_router.register('items', orderViews.CartItemViewSet, basename='cart-items'
 urlpatterns = [
     path('', include(router.urls)),
     path('', include(products_router.urls)),
-    path('', include(carts_router.urls))
+    path('', include(carts_router.urls)),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
 ] 

@@ -1,23 +1,28 @@
 from products.serializers import ProductSerializer, CategorySerializer, CategorySerializer, ReviewSerializer
 from products.models import Product, Category, Review
+from products.filters import ProductFilter
+from products.paginations import DefaultPagination
 from drf_yasg.utils import swagger_auto_schema
 from django.db.models import Count
-from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
-from products.filters import ProductFilter
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
-# from rest_framework.pagination import PageNumberPagination
-from products.paginations import DefaultPagination
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ProductFilter
-    # pagination_class = PageNumberPagination
     pagination_class = DefaultPagination
     search_fields = ['name', 'description', 'category__name']
     ordering_fields = ['price', 'updated_at']
+    # permission_classes = [IsAuthenticated]
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        return [IsAdminUser()]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
