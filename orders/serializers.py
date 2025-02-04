@@ -101,7 +101,12 @@ class OrderItemSerializer(serializers.ModelSerializer):
     product = SimpleProductSerializer()
     class Meta:
         model = OrderItem
-        fields = ['id', 'product']
+        fields = ['id', 'product', 'price', 'quantity', 'total_price']
+
+class UpdateOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['status']
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)

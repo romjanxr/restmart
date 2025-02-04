@@ -22,7 +22,8 @@ class OrderService:
                     order = order,
                     product = item.product,
                     price = item.product.price,
-                    quantity = item.quantity
+                    quantity = item.quantity,
+                    total_price = item.product.price * item.quantity
                 )
                 for item in cart_items
             ]

@@ -68,6 +68,7 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(
         validators=[MinValueValidator(1)]
     )
+    total_price = models.DecimalField(max_digits=12, decimal_places=2)
 
 
     def __str__(self):
