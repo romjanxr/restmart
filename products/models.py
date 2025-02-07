@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.timezone import now
+from products.validators import validate_file_size
+from django.core.validators import FileExtensionValidator
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -28,6 +30,11 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='product/images', validators=[validate_file_size])
+    # file = models.FileField(FileExtensionValidator(allowed_extensions=['pdf']))
 
 
 class Review(models.Model):

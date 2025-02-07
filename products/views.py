@@ -1,5 +1,5 @@
-from products.serializers import ProductSerializer, CategorySerializer, CategorySerializer, ReviewSerializer
-from products.models import Product, Category, Review
+from products.serializers import ProductSerializer, CategorySerializer, CategorySerializer, ReviewSerializer, ProductImageSerializer
+from products.models import Product, Category, Review, ProductImage
 from products.filters import ProductFilter
 from products.paginations import DefaultPagination
 from api.permissions import IsAdminOrReadOnly
@@ -12,7 +12,13 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import DjangoModelPermissions
 
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.all()
+    """This view provide options for 
+        - Creating Product
+        - Updating Product
+        - Deleting Product
+        - And Getting Product Instance
+    """
+    queryset = Product.objects.prefetch_related('images').all()
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ProductFilter
@@ -28,6 +34,15 @@ class ProductViewSet(ModelViewSet):
             return Response({'message': 'Product has stock more than 10 could not be deleted'})
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ProductImageViewSet(ModelViewSet):
+    serializer_class = ProductImageSerializer
+
+    def get_queryset(self):
+        return ProductImage.objects.filter(product_id=self.kwargs['product_pk'])
+
+    def perform_create(self, serializer):
+        serializer.save(product_id=self.kwargs['product_pk'])
 
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.annotate(products_count=Count('products')).all()
