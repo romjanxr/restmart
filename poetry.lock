@@ -508,6 +508,25 @@ files = [
 ]
 
 [[package]]
+name = "model-bakery"
+version = "1.20.1"
+description = "Smart object creation facility for Django."
+optional = false
+python-versions = ">=3.8"
+groups = ["dev"]
+files = [
+    {file = "model_bakery-1.20.1-py3-none-any.whl", hash = "sha256:eb3b4301e6a5620dac9a16d5d586796869bda05b958a95239fbccf69e79c3831"},
+    {file = "model_bakery-1.20.1.tar.gz", hash = "sha256:6b9dcdcdbbc65f6c1e0c61ebea173777020ddcdce52f3e21362ba7f6000f90fe"},
+]
+
+[package.dependencies]
+django = ">=4.2"
+
+[package.extras]
+docs = ["myst-parser", "sphinx", "sphinx-rtd-theme"]
+test = ["black", "coverage", "mypy", "pillow", "pytest", "pytest-django", "ruff"]
+
+[[package]]
 name = "oauthlib"
 version = "3.2.2"
 description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
@@ -1070,4 +1089,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "ed9dce95d11a85e17f6b6543bbad7f5d720ad935639e8d4a65627ea95cda2488"
+content-hash = "6d22df8820ed913c8a8deef6d0a84e9878f6bb73e2af0eb9b552d798e2aebc11"
