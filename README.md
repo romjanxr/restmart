@@ -81,6 +81,11 @@ Ensure you have the following installed:
 7. **Access API Documentation**
    - Swagger UI: `http://127.0.0.1:8000/swagger/`
 
+## Running Test
+To ensure everything is working correctly, run the automated tests using Pytest:
+```bash
+pytest
+```
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
