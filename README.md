@@ -1,4 +1,4 @@
-# DRF RESTMart E-Commerce API
+# DRF RestMart E-Commerce API
 
 This is a RESTful API built using Django Rest Framework (DRF) for an e-commerce system. The API provides functionalities for managing products, categories, carts, and orders, along with JWT authentication for user authentication and authorization.
 
@@ -21,6 +21,7 @@ This is a RESTful API built using Django Rest Framework (DRF) for an e-commerce 
 - **Swagger** - API documentation
 - **Whitenoise** - Static file serving
 - **Cloudinary** - Media file storage (if applicable)
+- **Poetry** (for dependency management)
 
 ## Installation
 
@@ -28,27 +29,35 @@ This is a RESTful API built using Django Rest Framework (DRF) for an e-commerce 
 Ensure you have the following installed:
 - Python (>= 3.8)
 - PostgreSQL
-- Virtualenv (optional but recommended)
-- Docker (if deploying with containers)
+- Poetry (for dependency management)
 
 ### Setup Instructions
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-username/your-repository.git
-   cd your-repository
+   git clone https://github.com/romjanxr/RestMart.git
+   cd RestMart
    ```
 
-2. **Create and Activate a Virtual Environment**
+2. **Install Dependencies using Poetry**
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   poetry install
    ```
 
-3. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+3. **Activate the Virtual Environment**
+
+   * **Linux/macOS:**
+
+     ```bash
+     source $(poetry env info --path)/bin/activate
+     ```
+
+   * **Windows:**
+
+     ```powershell
+     $(poetry env info --path)\Scripts\Activate.ps1  # For PowerShell
+     $(poetry env info --path)\Scripts\activate     # For Command Prompt (cmd.exe)
+     ```
 
 4. **Configure Environment Variables**
    Create a `.env` file in the root directory and add the required environment variables:
@@ -71,17 +80,6 @@ Ensure you have the following installed:
 
 7. **Access API Documentation**
    - Swagger UI: `http://127.0.0.1:8000/swagger/`
-
-## API Endpoints
-
-| Method | Endpoint                | Description                |
-|--------|-------------------------|----------------------------|
-| POST   | `/api/auth/register/`   | Register a new user        |
-| POST   | `/api/auth/login/`      | Login and get JWT tokens   |
-| GET    | `/api/products/`        | Get all products           |
-| GET    | `/api/products/{id}/`   | Get product details        |
-| POST   | `/api/cart/add/`        | Add product to cart        |
-| POST   | `/api/orders/`          | Create an order            |
 
 
 ## Contributing
