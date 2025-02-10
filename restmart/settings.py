@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     'rest_framework',
     'djoser',
+    'silk',
     'api',
     'users',
     'products',
@@ -42,6 +43,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if DEBUG == True:
+    MIDDLEWARE += ['silk.middleware.SilkyMiddleware',]
+
 
 ROOT_URLCONF = 'restmart.urls'
 
@@ -114,6 +119,8 @@ INTERNAL_IPS = [
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -29,4 +29,5 @@ django-debug-toolbar = "^5.0.1"
 pytest-watch = "^4.2.0"
 model-bakery = "^1.20.1"
 locust = "^2.32.8"
+django-silk = "^5.3.2"
 
