@@ -2,6 +2,7 @@ from .base import *
 
 DEBUG = True
 
+INSTALLED_APPS.insert(0, "whitenoise.runserver_nostatic",)
 INSTALLED_APPS += [
     "debug_toolbar",
     "silk"

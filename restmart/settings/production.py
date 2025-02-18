@@ -1,6 +1,8 @@
 from .base import *
 
 DEBUG = False
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
 
 # Let Vercel handle static files
 # Vercel will automatically serve them from staticfiles/.
