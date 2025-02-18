@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.timezone import now
 from products.validators import validate_file_size
 from django.core.validators import FileExtensionValidator
+from cloudinary.models import CloudinaryField
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -18,8 +19,6 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField()
-    image = models.ImageField(
-        upload_to="products/images/", blank=True, null=True)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name="products")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -33,8 +32,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='product/images', validators=[validate_file_size])
-    # file = models.FileField(FileExtensionValidator(allowed_extensions=['pdf']))
+    image = CloudinaryField('image')
 
 
 class Review(models.Model):
