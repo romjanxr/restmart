@@ -21,7 +21,7 @@ This is a RESTful API built using Django Rest Framework (DRF) for an e-commerce 
 - **Swagger** - API documentation
 - **Whitenoise** - Static file serving
 - **Cloudinary** - Media file storage (if applicable)
-- **Poetry** (for dependency management)
+- **Poetry** - For dependency management
 
 ## Installation
 
