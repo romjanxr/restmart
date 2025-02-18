@@ -1,15 +1,13 @@
 #!/bin/bash
-echo "Installing Poetry..."
-python3 -m pip install poetry
 
-echo "Installing dependencies with Poetry..."
-poetry install --no-root --no-interaction
+echo "Installing dependencies with pip..."
+pip install -r requirements.txt
 
 echo "Applying database migrations..."
-poetry run python3 manage.py migrate --noinput
+python3 manage.py migrate --noinput
 
 echo "Collecting static files..."
-poetry run python3 manage.py collectstatic --noinput
+python3 manage.py collectstatic --noinput
 
 echo "Starting Daphne ASGI server..."
-poetry run daphne -b 0.0.0.0 -p $PORT restmart.asgi:application
+daphne -b 0.0.0.0 -p $PORT restmart.asgi:application
