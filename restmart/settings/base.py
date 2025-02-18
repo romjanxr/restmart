@@ -132,7 +132,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('JWT',),
+   'AUTH_HEADER_TYPES': ('Bearer',),
    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
 }
 
@@ -153,7 +153,7 @@ SWAGGER_SETTINGS = {
             'type': 'apiKey',
             'name': 'Authorization',
             'in': 'header',
-            'description': 'Enter your JWT token in the format: `JWT <your_token>`'
+            'description': 'Enter your JWT token in the format: `Bearer <your_token>`'
         }
     }
 }
