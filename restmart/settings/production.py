@@ -4,7 +4,7 @@ DEBUG = False
 
 # Let Vercel handle static files
 # Vercel will automatically serve them from staticfiles/.
-INSTALLED_APPS.remove("django.contrib.staticfiles")
+# INSTALLED_APPS.remove("django.contrib.staticfiles")
 
 DATABASES = {
     'default': {
