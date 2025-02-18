@@ -25,15 +25,7 @@ class ProductViewSet(ModelViewSet):
     pagination_class = DefaultPagination
     search_fields = ['name', 'description', 'category__name']
     ordering_fields = ['price', 'updated_at']
-    # permission_classes = [IsAdminOrReadOnly]
-    # permission_classes = [DjangoModelPermissions] # model onujayi access dibe
-
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        if instance.stock > 10:
-            return Response({'message': 'Product has stock more than 10 could not be deleted'})
-        self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    permission_classes = [IsAdminOrReadOnly]
 
 class ProductImageViewSet(ModelViewSet):
     serializer_class = ProductImageSerializer
