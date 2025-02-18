@@ -39,10 +39,10 @@ class ProductImageViewSet(ModelViewSet):
     serializer_class = ProductImageSerializer
 
     def get_queryset(self):
-        return ProductImage.objects.filter(product_id=self.kwargs['product_pk'])
+        return ProductImage.objects.filter(product_id=self.kwargs.get('product_pk'))
 
     def perform_create(self, serializer):
-        serializer.save(product_id=self.kwargs['product_pk'])
+        serializer.save(product_id=self.kwargs.get('product_pk'))
 
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.annotate(products_count=Count('products')).all()
@@ -59,7 +59,7 @@ class ReviewViewSet(ModelViewSet):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        return Review.objects.filter(product_id=self.kwargs['product_pk'])
+        return Review.objects.filter(product_id=self.kwargs.get('product_pk'))
 
     def get_serializer_context(self):
-        return {'product_id': self.kwargs['product_pk']}
+        return {'product_id': self.kwargs.get('product_pk')}
