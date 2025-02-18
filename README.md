@@ -23,6 +23,9 @@ This is a RESTful API built using Django Rest Framework (DRF) for an e-commerce 
 - **Cloudinary** - Media file storage (if applicable)
 - **Poetry** - For dependency management
 
+## API Documentation
+Read the API documentation here [https://rest-mart-drf.vercel.app/swagger/](https://rest-mart-drf.vercel.app/swagger/)
+
 ## Installation
 
 ### Prerequisites
@@ -62,9 +65,24 @@ Ensure you have the following installed:
 4. **Configure Environment Variables**
    Create a `.env` file in the root directory and add the required environment variables:
    ```env
-   SECRET_KEY=your-secret-key
-   DEBUG=True
-   DATABASE_URL=postgres://user:password@localhost:5432/db_name
+   # Django Secret Key (Generate your own using `python -c "import secrets; print(secrets.token_urlsafe(50))"`)
+   SECRET_KEY=your-generated-secret-key
+
+   # Define Allowed Hosts
+   ALLOWED_HOSTS=127.0.0.1,localhost
+   CORS_ALLOWED_ORIGINS=http://localhost:3000  # Update with your frontend URL
+
+   # Email Configuration (Required for email functionality)
+   EMAIL_HOST=smtp.example.com
+   EMAIL_PORT=587
+   EMAIL_USE_TLS=True
+   EMAIL_HOST_USER=your-email@example.com
+   EMAIL_HOST_PASSWORD=your-email-password
+
+   # Cloudinary Configuration (For media uploads)
+   CLOUD_NAME=your-cloudinary-cloud-name
+   CLOUDINARY_API_KEY=your-cloudinary-api-key
+   CLOUDINARY_API_SECRET=your-cloudinary-api-secret
    ```
 
 5. **Apply Migrations and Create Superuser**
