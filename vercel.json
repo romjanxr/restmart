@@ -1,0 +1,16 @@
+{
+    "builds": [
+      {
+        "src": "start.sh",
+        "use": "@vercel/static-build",
+        "config": { "distDir": "staticfiles" }
+      }
+    ],
+    "routes": [
+      { "src": "/(.*)", "dest": "start.sh" }
+    ],
+    "env": {
+      "PYTHON_VERSION": "3.10"
+    }
+  }
+  
