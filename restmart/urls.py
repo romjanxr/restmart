@@ -5,6 +5,7 @@ from drf_yasg import openapi
 from rest_framework import permissions
 from django.conf.urls.static import static
 from django.conf import settings
+from api.views import api_root_view
 if settings.DEBUG == True:
     from debug_toolbar.toolbar import debug_toolbar_urls
 
@@ -23,6 +24,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("", api_root_view, name='api-root'),
     path('api/v1/', include('api.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
