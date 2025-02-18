@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Installing Poetry..."
-pip install poetry
+python -m pip install poetry
 
 echo "Installing dependencies with Poetry..."
 poetry install --no-root --no-interaction
