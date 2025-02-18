@@ -13,4 +13,4 @@ echo "Collecting static files..."
 python3 manage.py collectstatic --noinput
 
 echo "Starting Uvicorn ASGI server..."
-uvicorn restmart.asgi:application --host 0.0.0.0 --port $PORT
+python manage.py runserver 0.0.0.0:${PORT:-8000}
