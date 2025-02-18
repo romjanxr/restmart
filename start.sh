@@ -13,4 +13,4 @@ echo "Collecting static files..."
 python3 manage.py collectstatic --noinput
 
 echo "Starting Uvicorn ASGI server..."
-python manage.py runserver 0.0.0.0:${PORT:-8000}
+python3 manage.py runserver 0.0.0.0:${PORT:-8000}
