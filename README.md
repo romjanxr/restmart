@@ -28,13 +28,17 @@ Read the API documentation here [https://rest-mart-drf.vercel.app/swagger/](http
 
 ## Demo Credentials
 
-### Admin Access  
-- Email: admin@example.com  
-- Password: DemoAdmin123  
+### Admin Access 
+```plaintext
+Email: admin@example.com  
+Password: DemoAdmin123
+```  
 
-### Test User Access  
-- Email: test@example.com  
-- Password: DemoUser123  
+### Test User Access 
+```plaintext 
+Email: test@example.com  
+Password: DemoUser123
+```  
 
 ## Installation
 
