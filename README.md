@@ -26,6 +26,16 @@ This is a RESTful API built using Django Rest Framework (DRF) for an e-commerce 
 ## API Documentation
 Read the API documentation here [https://rest-mart-drf.vercel.app/swagger/](https://rest-mart-drf.vercel.app/swagger/)
 
+## Demo Credentials
+
+### Admin Access  
+- Email: admin@example.com  
+- Password: DemoAdmin123  
+
+### Test User Access  
+- Email: test@example.com  
+- Password: DemoUser123  
+
 ## Installation
 
 ### Prerequisites
