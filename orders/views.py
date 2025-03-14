@@ -13,6 +13,8 @@ from rest_framework import status
 User = get_user_model()
 
 # Create your views here.
+
+
 class CartViewset(CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, GenericViewSet):
     serializer_class = CartSerializer
 
@@ -24,8 +26,22 @@ class CartViewset(CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, Gener
             return Cart.objects.none()
         return Cart.objects.prefetch_related('items__product').filter(user=self.request.user)
 
+    def create(self, request, *args, **kwargs):
+        # Check if the user already has an active cart
+        existing_cart = Cart.objects.filter(user=request.user).first()
+
+        if existing_cart:
+            # Return the existing cart if it exists
+            serializer = self.get_serializer(existing_cart)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        # Otherwise, proceed with creating a new cart
+        return super().create(request, *args, **kwargs)
+
+
 class CartItemViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'patch', 'delete']
+
     def get_queryset(self):
         return CartItem.objects.filter(cart_id=self.kwargs.get('cart_pk')).select_related('product')
 
@@ -43,7 +59,7 @@ class CartItemViewSet(ModelViewSet):
 
         return {'cart_id': self.kwargs.get('cart_pk')}
 
-            
+
 class OrderViewset(ModelViewSet):
     http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
     serializer_class = OrderSerializer
@@ -53,21 +69,20 @@ class OrderViewset(ModelViewSet):
         order = self.get_object()
         OrderService.cancel_order(order, request.user)
         return Response({'status': 'Order cancelled'}, status=status.HTTP_201_CREATED)
-        
 
     @action(detail=True, methods=['patch'])
     def update_status(self, request, pk=None):
         order = self.get_object()
-        serializer = UpdateOrderSerializer(order, data=request.data, partial=True)
+        serializer = UpdateOrderSerializer(
+            order, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(OrderSerializer(order).data)
 
     def get_permissions(self):
-        if self.action in ['update_status', 'destroy' ]:
+        if self.action in ['update_status', 'destroy']:
             return [IsAdminUser()]
-        return[IsAuthenticated()]
-        
+        return [IsAuthenticated()]
 
     def get_serializer_context(self):
         if getattr(self, 'swagger_fake_view', False):
