@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from decimal import Decimal
 from products.models import Product, Category, Review, ProductImage
 
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -10,18 +11,25 @@ class CategorySerializer(serializers.ModelSerializer):
 
     products_count = serializers.IntegerField(read_only=True)
 
+
 class ProductImageSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField()
+
     class Meta:
         model = ProductImage
         fields = ['id', 'image']
 
+
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
+
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'stock', 'category', 'price_with_tax', 'images']
-    
-    price_with_tax = serializers.SerializerMethodField(method_name='calculate_tax')
+        fields = ['id', 'name', 'description', 'price',
+                  'stock', 'category', 'price_with_tax', 'images']
+
+    price_with_tax = serializers.SerializerMethodField(
+        method_name='calculate_tax')
 
     def calculate_tax(self, product: Product):
         return round(product.price * Decimal(1.1), 2)
@@ -30,6 +38,7 @@ class ProductSerializer(serializers.ModelSerializer):
         if value < 0:
             raise serializers.ValidationError('Price could not be negative')
         return value
+
 
 class SimpleUserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(
@@ -42,8 +51,10 @@ class SimpleUserSerializer(serializers.ModelSerializer):
     def get_current_user_name(self, obj):
         return obj.get_full_name()
 
+
 class ReviewSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField(method_name='get_user')
+
     class Meta:
         model = Review
         fields = ['id', 'rating', 'comment', 'user', 'product']
@@ -57,5 +68,3 @@ class ReviewSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         product_id = self.context['product_id']
         return Review.objects.create(product_id=product_id, **validated_data)
-
-   
