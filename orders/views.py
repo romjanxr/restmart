@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -9,6 +8,8 @@ from django.contrib.auth import get_user_model
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
+
 
 User = get_user_model()
 
@@ -105,3 +106,12 @@ class OrderViewset(ModelViewSet):
         elif self.request.method == 'PATCH':
             return UpdateOrderSerializer
         return OrderSerializer
+
+
+class HasOrderedProduct(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, product_id):
+        user = request.user
+        has_ordered = OrderItem.objects.filter(order__user=user, product_id=product_id).exists()
+        return Response({"hasOrdered": has_ordered})
