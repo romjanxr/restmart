@@ -22,5 +22,9 @@ urlpatterns = [
     path('', include(carts_router.urls)),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
+    path("payment/initiate/", orderViews.initiate_payment, name="initiate-payment"),
+    path("payment/success/", orderViews.payment_success, name="payment-success"),
+    path("payment/fail/", orderViews.payment_fail, name="payment-fail"),
+    path("payment/cancel/", orderViews.payment_cancel, name="payment-cancel"),
     path('orders/has-ordered/<int:product_id>/', orderViews.HasOrderedProduct.as_view()),
 ] 

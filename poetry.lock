@@ -2034,6 +2034,21 @@ dev = ["build", "hatch"]
 doc = ["sphinx"]
 
 [[package]]
+name = "sslcommerz-lib"
+version = "1.0"
+description = "SSLCOMERZ PAYMENT GATEWAY"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "sslcommerz-lib-1.0.tar.gz", hash = "sha256:b77f1a88a6c320ab161d76c85f7c73b2741f0c49c4fe2df35e8bc1b50dc4ce3e"},
+    {file = "sslcommerz_lib-1.0-py3-none-any.whl", hash = "sha256:24751cabe79da0e7ea27076827db4f8bbc02d70df79aff5efea14266281c5e40"},
+]
+
+[package.dependencies]
+requests = "*"
+
+[[package]]
 name = "tomli"
 version = "2.2.1"
 description = "A lil' TOML parser"
@@ -2285,4 +2300,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "6b24b9e3e0873d3b7b0be547c0cf8baa6aae8b13b3463ba9e1730110b8283eda"
+content-hash = "d3c0e4f12eb18effd8be2a459e0b23e819132f421fab98c5a9162ea46b0c2961"

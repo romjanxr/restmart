@@ -161,6 +161,9 @@ SWAGGER_SETTINGS = {
     }
 }
 
+# SSLCOMMERZE_Configuration
+SSLCOMMERZE_STORE_ID=config('SSLCOMMERZE_STORE_ID')
+SSLCOMMERZE_STORE_PASS=config('SSLCOMMERZE_STORE_PASS')
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST')
@@ -168,3 +171,7 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+# Others
+BACKEND_URL = config("BACKEND_URL")
+FRONTEND_URL = config("FRONTEND_URL")
