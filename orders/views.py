@@ -116,6 +116,8 @@ def initiate_payment(request):
     amount = request.data.get("amount")
     order_id = request.data.get("orderId")
     num_items = request.data.get("numItems")
+    
+    print(user, amount, order_id, num_items)
 
     settings = {'store_id': main_settings.SSLCOMMERZE_STORE_ID,
                 'store_pass': main_settings.SSLCOMMERZE_STORE_PASS, 'issandbox': True}
@@ -134,7 +136,7 @@ def initiate_payment(request):
     post_body['cus_add1'] = user.address
     post_body['cus_city'] = "Dhaka"
     post_body['cus_country'] = "Bangladesh"
-    post_body['shipping_method'] = "Courier"
+    post_body['shipping_method'] = "NO"
     post_body['multi_card_name'] = ""
     post_body['num_of_item'] = num_items
     post_body['product_name'] = "E-commerce Products"
@@ -142,7 +144,7 @@ def initiate_payment(request):
     post_body['product_profile'] = "general"
 
     response = sslcz.createSession(post_body)  # API response
-
+    print(response)
     if response.get("status") == 'SUCCESS':
         return Response({"payment_url": response['GatewayPageURL']})
     return Response({"error": "Payment initiation failed"}, status=status.HTTP_400_BAD_REQUEST)
