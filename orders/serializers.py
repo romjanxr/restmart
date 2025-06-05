@@ -3,7 +3,7 @@ from orders.models import Cart, CartItem, Order, OrderItem
 from orders.services import OrderService
 from products.serializers import ProductSerializer
 from products.models import Product
-
+from users.serializers import UserSerializer
 class EmptySerializer(serializers.Serializer):
     pass
 
@@ -124,9 +124,10 @@ class UpdateOrderSerializer(serializers.ModelSerializer):
 
     #     return super().update(instance, validated_data)
 
+
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)
-
+    user = UserSerializer()
     class Meta:
         model = Order
         fields = ['id', 'user', 'items', 'status', 'total_price', 'created_at']
