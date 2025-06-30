@@ -1,6 +1,75 @@
-__pycache__/
-db.sqlite3
-todo.ipynb
-.vscode
-.pytest_cache/
+# Global
+.DS_Store
 .env
+.env.local
+.env.*.local
+*.log
+*.sqlite3
+__pycache__/
+*.py[cod]
+*.swp
+*.swo
+*.bak
+*.tmp
+*.orig
+.cache/
+coverage/
+.vscode/
+.idea/
+node_modules/
+dist/
+build/
+
+# Byte-compiled / optimized / DLL files
+*.py[cod]
+*.so
+*.dll
+*.pyd
+*.pyc
+*.pyo
+
+# Test & Coverage
+htmlcov/
+.pytest_cache/
+.coverage
+coverage.xml
+nosetests.xml
+test-results.xml
+*.cover
+*.log
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Django
+backend/db.sqlite3
+backend/static/
+backend/media/
+backend/__pycache__/
+backend/**/*.pyc
+backend/local_settings.py
+
+# React (Frontend)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.turbo/
+frontend/.vercel/
+frontend/.env.local
+frontend/public/static/
+frontend/.eslintcache
+
+# Lock files (optional – keep if you use lockfile strictly)
+# Uncomment if not committing lockfiles
+# frontend/package-lock.json
+# frontend/pnpm-lock.yaml
+# frontend/yarn.lock
+# backend/poetry.lock
+# backend/requirements.txt
+
+# Editor folders
+*.sublime-project
+*.sublime-workspace
