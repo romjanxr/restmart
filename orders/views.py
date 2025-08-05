@@ -9,11 +9,13 @@ from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from django.views.decorators.csrf import csrf_exempt
 from sslcommerz_lib import SSLCOMMERZ
 from django.conf import settings as main_settings
 from django.http import HttpResponseRedirect
 
 User = get_user_model()
+
 
 # Create your views here.
 
@@ -150,25 +152,35 @@ def initiate_payment(request):
     return Response({"error": "Payment initiation failed"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def payment_success(request):
-    print("Inside success")
-    order_id = request.data.get("tran_id").split('_')[1]
-    order = Order.objects.get(id=order_id)
-    order.status = "Ready To Ship"
-    order.save()
     return HttpResponseRedirect(f"{main_settings.FRONTEND_URL}/dashboard/orders/")
 
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def payment_cancel(request):
     return HttpResponseRedirect(f"{main_settings.FRONTEND_URL}/dashboard/orders/")
 
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def payment_fail(request):
-    print("Inside fail")
     return HttpResponseRedirect(f"{main_settings.FRONTEND_URL}/dashboard/orders/")
+
+
+@csrf_exempt
+@api_view(['POST'])
+def payment_ipn(request):
+    try:
+        data = request.data
+        if data['status'] == 'VALID':
+            order_id = data['tran_id'].split('_')[1]
+            order = Order.objects.get(id=order_id)
+            order.status = "Ready To Ship"
+            order.save()
+    except Exception as e:
+        print(e)
+    return Response(status=status.HTTP_200_OK)
+
 
 class HasOrderedProduct(APIView):
     permission_classes = [IsAuthenticated]

@@ -26,5 +26,6 @@ urlpatterns = [
     path("payment/success/", orderViews.payment_success, name="payment-success"),
     path("payment/fail/", orderViews.payment_fail, name="payment-fail"),
     path("payment/cancel/", orderViews.payment_cancel, name="payment-cancel"),
+    path("payment/ipn/", orderViews.payment_ipn, name="payment-ipn"),
     path('orders/has-ordered/<int:product_id>/', orderViews.HasOrderedProduct.as_view()),
 ] 
