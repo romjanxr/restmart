@@ -3,7 +3,7 @@ name: Reset Database
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight UTC
+    - cron: "0 0 * * *" # Runs daily at midnight UTC
 
 jobs:
   reset-database:
@@ -16,21 +16,24 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'  # python version
+          python-version: "3.11"
 
       - name: Install Poetry 2.1.1
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
-          poetry --version  # Verify installation
+          poetry --version
 
       - name: Set Poetry Python Version
-        run: poetry env use python3  # Ensures Poetry uses the correct Python version
+        working-directory: backend
+        run: poetry env use python3
 
       - name: Install Dependencies
+        working-directory: backend
         run: poetry install --no-interaction --no-ansi
 
       - name: Run reset_data Management Command
+        working-directory: backend
         env:
           DJANGO_SETTINGS_MODULE: ${{ secrets.DJANGO_SETTINGS_MODULE }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
@@ -49,5 +52,4 @@ jobs:
           CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
           ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
           CORS_ALLOWED_ORIGINS: ${{ secrets.CORS_ALLOWED_ORIGINS }}
-
         run: poetry run python manage.py reset_data
