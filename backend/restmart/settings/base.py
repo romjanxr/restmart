@@ -7,8 +7,10 @@ import cloudinary
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1', cast=lambda v: v.split(','))
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=lambda v: v.split(','))
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1',
+                       cast=lambda v: v.split(','))
+CORS_ALLOWED_ORIGINS = config(
+    'CORS_ALLOWED_ORIGINS', cast=lambda v: v.split(','))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -132,14 +134,14 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('Bearer',),
-   "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
 }
 
 DJOSER = {
     'EMAIL_FRONTEND_PROTOCOL': config('FRONTEND_PROTOCOL'),
     'EMAIL_FRONTEND_DOMAIN': config('FRONTEND_DOMAIN'),
-    'EMAIL_FRONTEND_SITE_NAME': 'RestMart', 
+    'EMAIL_FRONTEND_SITE_NAME': 'RestMart',
     'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': 'activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
@@ -162,8 +164,8 @@ SWAGGER_SETTINGS = {
 }
 
 # SSLCOMMERZE_Configuration
-SSLCOMMERZE_STORE_ID=config('SSLCOMMERZE_STORE_ID')
-SSLCOMMERZE_STORE_PASS=config('SSLCOMMERZE_STORE_PASS')
+SSLCOMMERZE_STORE_ID = config('SSLCOMMERZE_STORE_ID')
+SSLCOMMERZE_STORE_PASS = config('SSLCOMMERZE_STORE_PASS')
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST')

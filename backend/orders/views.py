@@ -13,8 +13,10 @@ from django.views.decorators.csrf import csrf_exempt
 from sslcommerz_lib import SSLCOMMERZ
 from django.conf import settings as main_settings
 from django.http import HttpResponseRedirect
+import logging
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 
 # Create your views here.
@@ -118,8 +120,6 @@ def initiate_payment(request):
     amount = request.data.get("amount")
     order_id = request.data.get("orderId")
     num_items = request.data.get("numItems")
-    
-    print(user, amount, order_id, num_items)
 
     settings = {'store_id': main_settings.SSLCOMMERZE_STORE_ID,
                 'store_pass': main_settings.SSLCOMMERZE_STORE_PASS, 'issandbox': True}
@@ -131,6 +131,7 @@ def initiate_payment(request):
     post_body['success_url'] = f"{main_settings.BACKEND_URL}/api/v1/payment/success/"
     post_body['fail_url'] = f"{main_settings.BACKEND_URL}/api/v1/payment/fail/"
     post_body['cancel_url'] = f"{main_settings.BACKEND_URL}/api/v1/payment/cancel/"
+    post_body['ipn_url'] = f"{main_settings.BACKEND_URL}/api/v1/payment/ipn/"
     post_body['emi_option'] = 0
     post_body['cus_name'] = f"{user.first_name} {user.last_name}"
     post_body['cus_email'] = user.email
@@ -146,7 +147,6 @@ def initiate_payment(request):
     post_body['product_profile'] = "general"
 
     response = sslcz.createSession(post_body)  # API response
-    print(response)
     if response.get("status") == 'SUCCESS':
         return Response({"payment_url": response['GatewayPageURL']})
     return Response({"error": "Payment initiation failed"}, status=status.HTTP_400_BAD_REQUEST)
@@ -172,13 +172,14 @@ def payment_fail(request):
 def payment_ipn(request):
     try:
         data = request.data
-        if data['status'] == 'VALID':
+        if data['status'] == 'SUCCESS':
             order_id = data['tran_id'].split('_')[1]
             order = Order.objects.get(id=order_id)
             order.status = "Ready To Ship"
             order.save()
     except Exception as e:
-        print(e)
+        logger.error(
+            f"IPN processing failed for data: {request.data}", exc_info=True)
     return Response(status=status.HTTP_200_OK)
 
 
@@ -187,7 +188,6 @@ class HasOrderedProduct(APIView):
 
     def get(self, request, product_id):
         user = request.user
-        has_ordered = OrderItem.objects.filter(order__user=user, product_id=product_id).exists()
+        has_ordered = OrderItem.objects.filter(
+            order__user=user, product_id=product_id).exists()
         return Response({"hasOrdered": has_ordered})
-
-
