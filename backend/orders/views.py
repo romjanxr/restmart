@@ -172,7 +172,7 @@ def payment_fail(request):
 def payment_ipn(request):
     try:
         data = request.data
-        if data['status'] == 'SUCCESS':
+        if data['status'] == 'VALID':
             order_id = data['tran_id'].split('_')[1]
             order = Order.objects.get(id=order_id)
             order.status = "Ready To Ship"
