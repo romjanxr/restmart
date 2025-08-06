@@ -120,11 +120,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private void setLoading(boolean isLoading) {
         if (isLoading) {
             btnAddToCart.setEnabled(false);
-            btnAddToCart.setText("");
+            btnAddToCart.setText("ADDING...");
+            btnAddToCart.setBackgroundColor(getResources().getColor(R.color.colorButtonDisabled));
             addToCartProgress.setVisibility(View.VISIBLE);
         } else {
             btnAddToCart.setEnabled(true);
             btnAddToCart.setText("Add to Cart");
+            btnAddToCart.setBackgroundColor(getResources().getColor(R.color.purple_500));
             addToCartProgress.setVisibility(View.GONE);
         }
     }

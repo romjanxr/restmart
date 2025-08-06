@@ -84,12 +84,25 @@
                 android:textStyle="bold"
                 android:layout_gravity="end"/>
 
-            <Button
-                android:id="@+id/checkoutButton"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Place Order"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="8dp">
+
+                <Button
+                    android:id="@+id/checkoutButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Place Order" />
+
+                <ProgressBar
+                    android:id="@+id/checkout_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:elevation="8dp"/>
+            </FrameLayout>
         </LinearLayout>
 
     </RelativeLayout>

@@ -34,7 +34,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
     private String cartPk;
     private Toolbar toolbar;
     private List<CartItem> cartItems = new ArrayList<>();
-    private ProgressBar progressBar;
+    private ProgressBar progressBar, checkoutProgress;
     private LinearLayout emptyCartView;
 
     private static final String TAG = "CartActivity";
@@ -53,6 +53,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         checkoutButton = findViewById(R.id.checkoutButton);
         progressBar = findViewById(R.id.progressBar);
         emptyCartView = findViewById(R.id.empty_cart_view);
+        checkoutProgress = findViewById(R.id.checkout_progress);
 
         cartAdapter = new CartAdapter(this);
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -74,14 +75,14 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
+        setLoading(true);
         String authToken = "Bearer " + sharedPreferencesManager.getAuthToken();
         CreateOrderRequest request = new CreateOrderRequest(cartPk);
 
         apiService.createOrder(authToken, request).enqueue(new Callback<Order>() {
             @Override
             public void onResponse(Call<Order> call, Response<Order> response) {
-                progressBar.setVisibility(View.GONE);
+                setLoading(false);
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(CartActivity.this, "Order created successfully!", Toast.LENGTH_SHORT).show();
                     
@@ -103,10 +104,24 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
 
             @Override
             public void onFailure(Call<Order> call, Throwable t) {
-                progressBar.setVisibility(View.GONE);
+                setLoading(false);
                 Toast.makeText(CartActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void setLoading(boolean isLoading) {
+        if (isLoading) {
+            checkoutButton.setEnabled(false);
+            checkoutButton.setText("PLACING ORDER...");
+            checkoutButton.setBackgroundColor(getResources().getColor(R.color.colorButtonDisabled));
+            checkoutProgress.setVisibility(View.VISIBLE);
+        } else {
+            checkoutButton.setEnabled(true);
+            checkoutButton.setText("Place Order");
+            checkoutButton.setBackgroundColor(getResources().getColor(R.color.purple_500));
+            checkoutProgress.setVisibility(View.GONE);
+        }
     }
 
     @Override

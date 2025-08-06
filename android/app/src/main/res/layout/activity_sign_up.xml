@@ -145,12 +145,14 @@
                 android:visibility="gone"
                 android:layout_marginBottom="16dp"/>
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btnSignUp"
-                style="@style/Widget.RestMart.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="SIGN UP" />
+                android:text="SIGN UP"
+                android:padding="12dp"
+                android:textSize="18sp"
+                android:backgroundTint="@color/purple_500"/>
 
             <TextView
                 android:id="@+id/tvLogin"
