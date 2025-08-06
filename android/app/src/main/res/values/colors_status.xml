@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="status_not_paid">#F44336</color> <!-- Red -->
+    <color name="status_ready_to_ship">#FF9800</color> <!-- Orange -->
+    <color name="status_shipped">#2196F3</color> <!-- Blue -->
+    <color name="status_delivered">#4CAF50</color> <!-- Green -->
+    <color name="status_canceled">#9E9E9E</color> <!-- Gray -->
+</resources>
