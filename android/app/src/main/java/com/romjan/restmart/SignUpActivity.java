@@ -147,7 +147,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void setLoadingState(boolean isLoading) {
         if (isLoading) {
-            binding.btnSignUp.setText("");
+            binding.btnSignUp.setText("SIGNING UP...");
             binding.btnSignUp.setEnabled(false);
             binding.progressBar.setVisibility(View.VISIBLE);
         } else {

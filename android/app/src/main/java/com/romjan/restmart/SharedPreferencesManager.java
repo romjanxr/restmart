@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 public class SharedPreferencesManager {
 
-    private static final String PREF_NAME = "ElectroMartPrefs";
+    private static final String PREF_NAME = "RestMartPrefs";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     private static final String KEY_AUTH_TOKEN = "authToken";
 

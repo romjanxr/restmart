@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="ElectroMart" 
+        android:text="RestMart"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView

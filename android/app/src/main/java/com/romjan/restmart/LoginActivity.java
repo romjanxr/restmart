@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setLoadingState(boolean isLoading) {
         if (isLoading) {
-            binding.btnLogin.setText("");
+            binding.btnLogin.setText("LOGGING IN...");
             binding.btnLogin.setEnabled(false);
             binding.progressBar.setVisibility(View.VISIBLE);
         } else {
