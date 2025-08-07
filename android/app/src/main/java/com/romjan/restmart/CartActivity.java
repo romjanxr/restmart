@@ -59,7 +59,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartRecyclerView.setAdapter(cartAdapter);
 
-        apiService = NetworkConfig.getApiService();
+        apiService = NetworkConfig.getApiService(this);
         sharedPreferencesManager = new SharedPreferencesManager(this);
 
         createOrGetCart();

@@ -65,7 +65,7 @@ public class HomePageActivity extends AppCompatActivity implements FilterBottomS
         });
 
         sharedPreferencesManager = new SharedPreferencesManager(this);
-        apiService = NetworkConfig.getApiService();
+        apiService = NetworkConfig.getApiService(this);
 
         drawerLayout = binding.drawerLayout;
         navigationView = binding.navView;

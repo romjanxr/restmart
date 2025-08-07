@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize
         sharedPreferencesManager = new SharedPreferencesManager(this);
-        apiService = NetworkConfig.getApiService();
+        apiService = NetworkConfig.getApiService(this);
 
         // Check if user is already logged in
         if (sharedPreferencesManager.isLoggedIn()) {

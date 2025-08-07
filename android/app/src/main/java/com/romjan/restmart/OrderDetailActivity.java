@@ -80,7 +80,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
         String authToken = "Bearer " + sharedPreferencesManager.getAuthToken();
-        ApiService apiService = NetworkConfig.getApiService();
+        ApiService apiService = NetworkConfig.getApiService(this);
 
         apiService.getOrderDetails(authToken, orderId).enqueue(new Callback<Order>() {
             @Override
@@ -170,7 +170,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
         String authToken = "Bearer " + sharedPreferencesManager.getAuthToken();
-        ApiService apiService = NetworkConfig.getApiService();
+        ApiService apiService = NetworkConfig.getApiService(this);
 
         PaymentInitiationRequest request = new PaymentInitiationRequest(
                 currentOrder.getTotalPrice(),
@@ -208,7 +208,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
         String authToken = "Bearer " + sharedPreferencesManager.getAuthToken();
-        ApiService apiService = NetworkConfig.getApiService();
+        ApiService apiService = NetworkConfig.getApiService(this);
 
         apiService.cancelOrder(authToken, orderId).enqueue(new Callback<Void>() {
             @Override

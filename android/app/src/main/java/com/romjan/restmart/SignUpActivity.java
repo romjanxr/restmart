@@ -26,7 +26,7 @@ public class SignUpActivity extends AppCompatActivity {
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        apiService = NetworkConfig.getApiService();
+        apiService = NetworkConfig.getApiService(this);
 
         setupClickListeners();
     }

@@ -31,7 +31,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
 
-        apiService = NetworkConfig.getApiService();
+        apiService = NetworkConfig.getApiService(this);
         sharedPreferencesManager = new SharedPreferencesManager(this);
 
         productImageSlider = findViewById(R.id.product_image_slider);

@@ -41,7 +41,7 @@ public class OrdersActivity extends AppCompatActivity implements OrderAdapter.On
         progressBar = findViewById(R.id.progressBar);
         emptyOrdersView = findViewById(R.id.empty_orders_view);
 
-        apiService = NetworkConfig.getApiService();
+        apiService = NetworkConfig.getApiService(this);
         sharedPreferencesManager = new SharedPreferencesManager(this);
 
         orderAdapter = new OrderAdapter(this, new ArrayList<>(), this, this);
