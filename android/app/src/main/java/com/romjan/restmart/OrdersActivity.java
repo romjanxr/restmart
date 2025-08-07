@@ -17,8 +17,13 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import com.romjan.restmart.User;
+import com.romjan.restmart.PaymentInitiationRequest;
+import com.romjan.restmart.PaymentInitiationResponse;
 
-public class OrdersActivity extends AppCompatActivity implements OrderAdapter.OnCancelOrderClickListener, OrderAdapter.OnOrderClickListener {
+
+public class OrdersActivity extends AppCompatActivity implements OrderAdapter.OnCancelOrderClickListener, OrderAdapter.OnOrderClickListener, OrderAdapter.OnPayNowClickListener {
+
 
     private RecyclerView ordersRecyclerView;
     private OrderAdapter orderAdapter;
@@ -44,7 +49,7 @@ public class OrdersActivity extends AppCompatActivity implements OrderAdapter.On
         apiService = NetworkConfig.getApiService(this);
         sharedPreferencesManager = new SharedPreferencesManager(this);
 
-        orderAdapter = new OrderAdapter(this, new ArrayList<>(), this, this);
+        orderAdapter = new OrderAdapter(this, new ArrayList<>(), this, this, this);
         ordersRecyclerView.setAdapter(orderAdapter);
 
         fetchOrders();
@@ -121,6 +126,62 @@ public class OrdersActivity extends AppCompatActivity implements OrderAdapter.On
         Intent intent = new Intent(this, OrderDetailActivity.class);
         intent.putExtra(OrderDetailActivity.EXTRA_ORDER_ID, orderId);
         startActivity(intent);
+    }
+
+    @Override
+    public void onPayNowClick(Order order) {
+        handlePayment(order);
+    }
+
+    private void handlePayment(Order order) {
+        if (order == null) {
+            Toast.makeText(this, "Order details not available.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        User user = order.getUser();
+        if (user.getFirstName() == null || user.getFirstName().isEmpty() ||
+                user.getLastName() == null || user.getLastName().isEmpty() ||
+                user.getAddress() == null || user.getAddress().isEmpty() ||
+                user.getPhoneNumber() == null || user.getPhoneNumber().isEmpty()) {
+            Toast.makeText(this, "Please update your profile with name, address, and phone number.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+        String authToken = "Bearer " + sharedPreferencesManager.getAuthToken();
+        ApiService apiService = NetworkConfig.getApiService(this);
+
+        PaymentInitiationRequest request = new PaymentInitiationRequest(
+                order.getTotalPrice(),
+                order.getId(),
+                order.getItems().size()
+        );
+
+        apiService.initiatePayment(authToken, request).enqueue(new Callback<PaymentInitiationResponse>() {
+            @Override
+            public void onResponse(Call<PaymentInitiationResponse> call, Response<PaymentInitiationResponse> response) {
+                progressBar.setVisibility(View.GONE);
+                if (response.isSuccessful() && response.body() != null) {
+                    String paymentUrl = response.body().getPaymentUrl();
+                    if (paymentUrl != null && !paymentUrl.isEmpty()) {
+                        Intent intent = new Intent(OrdersActivity.this, PaymentActivity.class);
+                        intent.putExtra(PaymentActivity.EXTRA_PAYMENT_URL, paymentUrl);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(OrdersActivity.this, "Payment initiation failed.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(OrdersActivity.this, "Payment initiation failed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PaymentInitiationResponse> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(OrdersActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
 

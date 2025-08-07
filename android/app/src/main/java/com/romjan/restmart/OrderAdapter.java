@@ -23,13 +23,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     private List<Order> orders;
     private OnCancelOrderClickListener onCancelOrderClickListener;
     private OnOrderClickListener onOrderClickListener;
+    private OnPayNowClickListener onPayNowClickListener;
     private Context context;
 
-    public OrderAdapter(Context context, List<Order> orders, OnCancelOrderClickListener onCancelOrderClickListener, OnOrderClickListener onOrderClickListener) {
+    public OrderAdapter(Context context, List<Order> orders, OnCancelOrderClickListener onCancelOrderClickListener, OnOrderClickListener onOrderClickListener, OnPayNowClickListener onPayNowClickListener) {
         this.context = context;
         this.orders = orders;
         this.onCancelOrderClickListener = onCancelOrderClickListener;
         this.onOrderClickListener = onOrderClickListener;
+        this.onPayNowClickListener = onPayNowClickListener;
     }
 
     @NonNull
@@ -78,8 +80,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.orderStatusTextView.setBackground(ContextCompat.getDrawable(context, statusBackground));
 
         holder.payNowButton.setOnClickListener(v -> {
-            if (onOrderClickListener != null) {
-                onOrderClickListener.onOrderClick(order.getId());
+            if (onPayNowClickListener != null) {
+                onPayNowClickListener.onPayNowClick(order);
             }
         });
 
@@ -147,6 +149,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     public interface OnOrderClickListener {
         void onOrderClick(String orderId);
+    }
+
+    public interface OnPayNowClickListener {
+        void onPayNowClick(Order order);
     }
 }
 
