@@ -224,11 +224,14 @@ public class HomePageActivity extends AppCompatActivity implements FilterBottomS
     }
 
     private void loadProducts(boolean clearPrevious) {
+        if (isLoading) return;
+
         if (clearPrevious) {
             currentPage = 1;
             isLastPage = false;
             productAdapter.clearProducts();
         }
+
         isLoading = true;
         binding.progressBar.setVisibility(View.VISIBLE);
 

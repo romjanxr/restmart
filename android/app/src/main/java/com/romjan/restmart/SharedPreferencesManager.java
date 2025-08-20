@@ -11,6 +11,7 @@ public class SharedPreferencesManager {
     private static final String KEY_USER_FIRST_NAME = "userFirstName";
     private static final String KEY_USER_LAST_NAME = "userLastName";
     private static final String KEY_USER_EMAIL = "userEmail";
+    private static final String KEY_CART_PK = "cartPk";
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -49,6 +50,19 @@ public class SharedPreferencesManager {
 
     public String getUserEmail() {
         return sharedPreferences.getString(KEY_USER_EMAIL, "");
+    }
+
+    public void saveCartPk(String cartPk) {
+        editor.putString(KEY_CART_PK, cartPk);
+        editor.apply();
+    }
+
+    public String getCartPk() {
+        return sharedPreferences.getString(KEY_CART_PK, null);
+    }
+
+    public void clearCartPk() {
+        editor.remove(KEY_CART_PK).apply();
     }
 
     public void updateUserDetails(String firstName, String lastName, String email) {

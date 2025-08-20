@@ -1,5 +1,7 @@
 package com.romjan.restmart;
 
+import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,10 +56,15 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         apiService.getProductDetails(authToken, productId).enqueue(new Callback<Product>() {
             @Override
             public void onResponse(Call<Product> call, Response<Product> response) {
+                Context context = holder.itemView.getContext();
+                if (context instanceof Activity && ((Activity) context).isFinishing()) {
+                    return; // Activity is being destroyed, do not proceed.
+                }
+
                 if (response.isSuccessful() && response.body() != null) {
                     Product product = response.body();
                     if (product.getImages() != null && !product.getImages().isEmpty()) {
-                        Glide.with(holder.itemView.getContext())
+                        Glide.with(context)
                                 .load(product.getImages().get(0).getImage())
                                 .placeholder(R.drawable.ic_placeholder)
                                 .into(holder.productImageView);
@@ -66,7 +73,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
                     }
                 } else {
                     holder.productImageView.setImageResource(R.drawable.ic_placeholder);
-                    Toast.makeText(holder.itemView.getContext(), "Failed to load product image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Failed to load product image", Toast.LENGTH_SHORT).show();
                 }
             }
 

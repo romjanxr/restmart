@@ -80,4 +80,19 @@ public interface ApiService {
 
     @POST("payment/initiate/")
     Call<PaymentInitiationResponse> initiatePayment(@Header("Authorization") String authToken, @Body PaymentInitiationRequest request);
+
+    @GET("orders/has-ordered/{product_id}/")
+    Call<HasOrderedResponse> hasOrdered(@Header("Authorization") String authToken, @Path("product_id") int productId);
+
+    @GET("products/{product_pk}/reviews/")
+    Call<List<Review>> getReviews(@Header("Authorization") String authToken, @Path("product_pk") int productId);
+
+    @POST("products/{product_pk}/reviews/")
+    Call<Review> createReview(@Header("Authorization") String authToken, @Path("product_pk") int productId, @Body ReviewRequest reviewRequest);
+
+    @PATCH("products/{product_pk}/reviews/{id}/")
+    Call<Review> updateReview(@Header("Authorization") String authToken, @Path("product_pk") int productId, @Path("id") int reviewId, @Body ReviewRequest reviewRequest);
+
+    @DELETE("products/{product_pk}/reviews/{id}/")
+    Call<Void> deleteReview(@Header("Authorization") String authToken, @Path("product_pk") int productId, @Path("id") int reviewId);
 }
