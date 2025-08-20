@@ -109,9 +109,34 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
+                    fetchUserDetails(loginResponse.getAccess());
+                } else {
+                    // Handle error response
+                    setLoadingState(false);
+                    handleLoginError("Invalid email or password");
+                }
+            }
 
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                setLoadingState(false);
+                handleLoginError("Network error. Please check your connection and try again.");
+            }
+        });
+    }
+
+    private void fetchUserDetails(String token) {
+        apiService.getUser("Bearer " + token).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                setLoadingState(false);
+                if (response.isSuccessful() && response.body() != null) {
+                    User user = response.body();
                     sharedPreferencesManager.saveLoginData(
-                            loginResponse.getAccess()
+                            token,
+                            user.getFirstName(),
+                            user.getLastName(),
+                            user.getEmail()
                     );
 
                     // Show success message
@@ -119,15 +144,13 @@ public class LoginActivity extends AppCompatActivity {
 
                     // Navigate to main activity
                     navigateToMainActivity();
-
                 } else {
-                    // Handle error response
-                    handleLoginError("Invalid email or password");
+                    handleLoginError("Failed to fetch user details.");
                 }
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 setLoadingState(false);
                 handleLoginError("Network error. Please check your connection and try again.");
             }

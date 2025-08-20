@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="176dp"
     android:background="@color/purple_500"
@@ -8,12 +9,17 @@
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher_round" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/navHeaderImageView"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_avatar_placeholder"
+        app:civ_border_color="@android:color/white"
+        app:civ_border_width="1dp" />
 
     <TextView
+        android:id="@+id/navHeaderNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
@@ -21,7 +27,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/navHeaderEmailTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="user@example.com" />

@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="design_default_color_error">#B00020</color>
     <color name="colorButtonDisabled">#BDBDBD</color>
+    <color name="colorPrimary">#FF6200EE</color>
 </resources>

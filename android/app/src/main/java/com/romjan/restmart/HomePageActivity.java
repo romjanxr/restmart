@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -89,6 +91,7 @@ public class HomePageActivity extends AppCompatActivity implements FilterBottomS
         setupRecyclerView();
         loadCategories();
         loadProducts(false);
+        updateNavHeader();
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -275,18 +278,53 @@ public class HomePageActivity extends AppCompatActivity implements FilterBottomS
         loadProducts(true);
     }
 
+    private void updateNavHeader() {
+        View headerView = navigationView.getHeaderView(0);
+        TextView navHeaderNameTextView = headerView.findViewById(R.id.navHeaderNameTextView);
+        TextView navHeaderEmailTextView = headerView.findViewById(R.id.navHeaderEmailTextView);
+
+        // Set initial text from SharedPreferences
+        String firstName = sharedPreferencesManager.getUserFirstName();
+        String lastName = sharedPreferencesManager.getUserLastName();
+        String email = sharedPreferencesManager.getUserEmail();
+        if (!firstName.isEmpty() && !lastName.isEmpty()) {
+            navHeaderNameTextView.setText(firstName + " " + lastName);
+        }
+        if (!email.isEmpty()) {
+            navHeaderEmailTextView.setText(email);
+        }
+
+        // Fetch latest user data from network
+        String authToken = "Bearer " + sharedPreferencesManager.getAuthToken();
+        apiService.getUser(authToken).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    User user = response.body();
+                    // Update SharedPreferences with the latest data
+                    sharedPreferencesManager.updateUserDetails(user.getFirstName(), user.getLastName(), user.getEmail());
+                    // Update the UI
+                    navHeaderNameTextView.setText(user.getFirstName() + " " + user.getLastName());
+                    navHeaderEmailTextView.setText(user.getEmail());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                // Could optionally show a toast message here
+            }
+        });
+    }
+
     private boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
             // Handle the home action
-            Toast.makeText(this, "Home clicked", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_profile) {
-            // Handle the profile action
-            Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, ProfileActivity.class));
         } else if (id == R.id.nav_settings) {
-            // Handle the settings action
-            Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.nav_logout) {
             logout();
         }
@@ -308,8 +346,7 @@ public class HomePageActivity extends AppCompatActivity implements FilterBottomS
             startActivity(new Intent(this, CartActivity.class));
             return true;
         } else if (id == R.id.bottom_nav_account) {
-            // Handle account action
-            Toast.makeText(this, "Bottom Account clicked", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, ProfileActivity.class));
             return true;
         }
         return false;

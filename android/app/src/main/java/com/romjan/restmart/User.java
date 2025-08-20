@@ -1,73 +1,41 @@
 package com.romjan.restmart;
 
-import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
     private int id;
     private String email;
-    @SerializedName("first_name")
-    private String firstName;
-    @SerializedName("last_name")
-    private String lastName;
+    private String first_name;
+    private String last_name;
     private String address;
-    @SerializedName("phone_number")
-    private String phoneNumber;
-    @SerializedName("is_staff")
-    private boolean isStaff;
+    private String phone_number;
+    private boolean is_staff;
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        return first_name;
     }
 
     public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+        return last_name;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        return phone_number;
     }
 
     public boolean isStaff() {
-        return isStaff;
-    }
-
-    public void setStaff(boolean staff) {
-        isStaff = staff;
+        return is_staff;
     }
 }

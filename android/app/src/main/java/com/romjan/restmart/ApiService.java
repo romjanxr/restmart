@@ -13,9 +13,20 @@ import retrofit2.http.Header;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+import retrofit2.http.PUT;
+
 public interface ApiService {
     @POST("auth/jwt/create/")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
+    
+    @GET("auth/users/me/")
+    Call<User> getUser(@Header("Authorization") String authToken);
+
+    @PUT("auth/users/me/")
+    Call<User> updateUser(@Header("Authorization") String authToken, @Body UpdateUserRequest updateUserRequest);
+
+    @POST("auth/users/set_password/")
+    Call<Void> changePassword(@Header("Authorization") String authToken, @Body ChangePasswordRequest changePasswordRequest);
 
     @POST("auth/users/")
     Call<RegisterResponse> register(@Body RegisterRequest registerRequest);
